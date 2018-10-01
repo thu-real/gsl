@@ -585,7 +585,7 @@ foreach( lang C CXX )
   endif()
 endforeach()
 
-enable_testing()
+# enable_testing()
 
 # Adds a GSL test. Usage:
 #   add_gsl_test(<exename> <source> ...)
