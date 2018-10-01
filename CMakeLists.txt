@@ -409,9 +409,9 @@ endif ()
 # Compiles the source code, runs the program and sets ${VAR} to 1 if the
 # return value is equal to ${RESULT}.
 macro(check_run_result SRC RESULT VAR)
-  set(SRC_FILE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/src.c)
+  set(SRC_FILE ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/src.c)
   file(WRITE ${SRC_FILE} "${SRC}")
-  try_run(RUN_RESULT COMPILE_RESULT ${CMAKE_BINARY_DIR} ${SRC_FILE}
+  try_run(RUN_RESULT COMPILE_RESULT ${CMAKE_CURRENT_BINARY_DIR} ${SRC_FILE}
           CMAKE_FLAGS -DLINK_LIBRARIES:STRING=${CMAKE_REQUIRED_LIBRARIES})
   if (RUN_RESULT EQUAL ${RESULT})
     set(${VAR} 1)
@@ -585,7 +585,7 @@ foreach( lang C CXX )
   endif()
 endforeach()
 
-enable_testing()
+# enable_testing()
 
 # Adds a GSL test. Usage:
 #   add_gsl_test(<exename> <source> ...)
@@ -711,7 +711,7 @@ if (GSL_INSTALL OR NOT DEFINED GSL_INSTALL)
       ARCHIVE DESTINATION lib)
   endif ()
   install(FILES ${GSL_HEADER_PATHS} DESTINATION include/gsl)
-  set(PC_FILE ${CMAKE_BINARY_DIR}/gsl.pc)
+  set(PC_FILE ${CMAKE_CURRENT_BINARY_DIR}/gsl.pc)
   configure_file("gsl.pc.cmake" ${PC_FILE} @ONLY)
   install(FILES ${PC_FILE} DESTINATION lib/pkgconfig)
 
@@ -732,10 +732,10 @@ if (GSL_INSTALL OR NOT DEFINED GSL_INSTALL)
 
   # write after putting back ;
   string(REPLACE "@SEMICOLON@"  "\\;" GSL_CONFIG_FILE "${GSL_CONFIG_FILE}")
-  file(WRITE ${CMAKE_BINARY_DIR}/gsl-config ${GSL_CONFIG_FILE})
+  file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gsl-config ${GSL_CONFIG_FILE})
 
   # Install gsl-config
-  install(PROGRAMS ${CMAKE_BINARY_DIR}/gsl-config DESTINATION bin)
+  install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/gsl-config DESTINATION bin)
   
   # Create cmake files that can be used to import GSL into another project. 
   include(CMakePackageConfigHelpers)
@@ -744,17 +744,17 @@ if (GSL_INSTALL OR NOT DEFINED GSL_INSTALL)
     DESTINATION lib/cmake/${PACKAGE_NAME}-${PACKAGE_VERSION}
     NAMESPACE GSL:: )
   configure_package_config_file(
-    ${CMAKE_SOURCE_DIR}/cmake/${PACKAGE_NAME}-config.cmake.in
-    ${CMAKE_BINARY_DIR}/cmake/${PACKAGE_NAME}-config.cmake
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PACKAGE_NAME}-config.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/cmake/${PACKAGE_NAME}-config.cmake
     INSTALL_DESTINATION cmake/${PACKAGE_NAME} )
   write_basic_package_version_file(
-    ${CMAKE_BINARY_DIR}/cmake/${PACKAGE_NAME}-config-version.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/cmake/${PACKAGE_NAME}-config-version.cmake
     VERSION ${PACKAGE_VERSION}
     COMPATIBILITY SameMajorVersion )
   install(
     FILES
-      ${CMAKE_BINARY_DIR}/cmake/${PACKAGE_NAME}-config.cmake
-      ${CMAKE_BINARY_DIR}/cmake/${PACKAGE_NAME}-config-version.cmake
+      ${CMAKE_CURRENT_BINARY_DIR}/cmake/${PACKAGE_NAME}-config.cmake
+      ${CMAKE_CURRENT_BINARY_DIR}/cmake/${PACKAGE_NAME}-config-version.cmake
     DESTINATION 
       lib/cmake/${PACKAGE_NAME}-${PACKAGE_VERSION} )
 
